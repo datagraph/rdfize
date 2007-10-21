@@ -37,6 +37,6 @@ else
     extractor = RDFize::Extractor.for(mime_type)
     abort("#{File.basename($0)}: #{file}: No extractor for content type #{mime_type}.") unless extractor
 
-    extractor.extract(file)
+    extractor.extract(file, mime_type)
   end
 end

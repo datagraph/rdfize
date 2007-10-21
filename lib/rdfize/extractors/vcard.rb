@@ -10,6 +10,7 @@ module RDFize::Extractors
     BASICS = [:FN, :NICKNAME, :BDAY, :MAILER, :GEO, :TITLE, :ROLE, :CATEGORIES,
               :NAME, :SOURCE, :NOTE, :PRODID, :REV, :"SORT-STRING", :CLASS]
 
+    requires_gem :vpim => true
     content_type 'text/x-vcard', :extension => :vcard
     content_type 'text/directory', :extension => :vcf
 

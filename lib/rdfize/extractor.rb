@@ -37,6 +37,18 @@ module RDFize
       end
     end
 
+    def self.requires_platform(args = {})
+      # TODO
+    end
+
+    def self.requires_gem(args = {})
+      # TODO
+    end
+
+    def self.requires_bin(args = {})
+      # TODO
+    end
+
     def self.identify(file)
       {'application/octet-stream' => 0.0}
     end
@@ -45,7 +57,7 @@ module RDFize
       true
     end
 
-    def self.extract(file)
+    def self.extract(file, content_type)
       []
     end
 
