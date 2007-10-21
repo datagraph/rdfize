@@ -12,6 +12,10 @@ module RDF
       block.call(self) if block_given?
     end
 
+    def ==(other)
+      uri == other.uri
+    end
+
     def namespaces
       Namespace.prefixes # FIXME
     end

@@ -1,4 +1,5 @@
 require 'rdf/namespace'
+require 'rdf/namespaces'
 require 'rdf/repository'
 require 'rdf/literal'
 require 'rdf/resource'

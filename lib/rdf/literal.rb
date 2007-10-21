@@ -38,8 +38,13 @@ module RDF
               when Time     then XSD.dateTime
             end
         end
-        @value = @value.to_s
       end
+
+      @value = @value.to_s
+    end
+
+    def ==(other)
+      value == other.value && language == other.language && type == other.type
     end
 
     def to_s
