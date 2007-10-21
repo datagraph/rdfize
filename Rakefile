@@ -7,3 +7,9 @@ require 'rake/clean'
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
 require 'rdfize/version'
+
+Rake::TestTask.new do |t|
+  t.test_files = FileList['test/test*.rb']
+  t.warning = true
+  t.ruby_opts = %w(-rtest/unit)
+end
