@@ -1,8 +1,6 @@
 module RDF
   class Namespace
 
-    attr_reader :uri
-
     @@prefixes ||= {
       :rdf     => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
       :rdfs    => 'http://www.w3.org/2000/01/rdf-schema#',
@@ -13,8 +11,14 @@ module RDF
       :dcterms => 'http://purl.org/dc/terms/',
     }
 
+    attr_reader :uri
+
     def self.prefixes
       @@prefixes
+    end
+
+    def self.prefix_for(uri)
+      @@prefixes.index(uri)
     end
 
     def self.register!(prefix, uri)
@@ -44,7 +48,7 @@ module RDF
     end
 
     def prefix
-      @@prefixes.index(uri)
+      self.class.prefix_for(uri)
     end
 
     def to_s
@@ -55,5 +59,13 @@ module RDF
       "#<#{self.class} #{uri}>"
     end
 
+  end
+
+  module Namespaces
+    RDF  = Namespace[:rdf]
+    RDFS = Namespace[:rdfs]
+    XSD  = Namespace[:xsd]
+    OWL  = Namespace[:owl]
+    DC   = Namespace[:dc]
   end
 end

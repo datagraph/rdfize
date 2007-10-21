@@ -48,12 +48,23 @@ module RDF
       self[method.to_s.gsub('_', '-')]
     end
 
+    def qname
+      if uri =~ /([\w\d\-_]+)$/
+        suffix = $1
+        if prefix = Namespace.prefix_for(uri[0...-suffix.length])
+          "#{prefix}:#{suffix}"
+        else
+          nil
+        end
+      end
+    end
+
     def to_s
-      "<#{uri}>"
+      "<#{qname || uri}>"
     end
 
     def inspect
-      "#<#{self.class} #{uri}>"
+      "#<#{self.class} #{qname || uri}>"
     end
 
   end
