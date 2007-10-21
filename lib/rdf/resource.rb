@@ -12,16 +12,16 @@ module RDF
       block.call(self) if block_given?
     end
 
+    def anonymous?
+      @uri.nil?
+    end
+
     def ==(other)
-      uri == other.uri
+      anonymous? ? self.equal?(other) : uri == other.uri
     end
 
     def namespaces
       Namespace.prefixes # FIXME
-    end
-
-    def anonymous?
-      @uri.nil?
     end
 
     def type=(value)
