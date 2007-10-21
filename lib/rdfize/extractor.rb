@@ -5,6 +5,23 @@ module RDFize
     @@file_extensions = {}
     @@mime_types = {}
 
+    def self.file_extension(filename)
+      filename =~ /\.([\w\d]+)$/ ? $1 : nil
+    end
+
+    def self.mime_type(filename)
+      if ext = file_extension(filename)
+        @@file_extensions[ext.to_sym] ||
+          `file -bi #{filename}`.strip
+      end
+    end
+
+    def self.for(mime_type)
+      if types = @@mime_types[mime_type]
+        types.first
+      end
+    end
+
     def self.inherited(child) #:nodoc:
       @@extractors << child
       super

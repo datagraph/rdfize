@@ -1,0 +1,33 @@
+= RDFize
+
+== Dependencies
+
+* Ruby 1.8+
+
+
+== Download
+
+The latest version of RDFize can be found at:
+
+* http://rubyforge.org/frs/?group_id=4677
+
+Documentation can be found at:
+
+* http://rdfize.rubyforge.org/
+
+
+== Installation
+
+The recommended installation method is via RubyGems:
+
+  % [sudo] gem install rdfize
+
+
+== Usage
+
+  % rdfize [options] input ...
+
+
+== License
+
+RDFize is released under the MIT license.
