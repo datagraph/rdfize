@@ -46,4 +46,12 @@ class TestRDF < Test::Unit::TestCase
     assert_equal Literal.new(-1.0/0.0).value, '-INF'
   end
 
+  def test_literal_equality
+    assert_equal Literal.new(123), Literal.new(123)
+    assert_not_equal Literal.new(3), Literal.new(3.0)
+    assert_not_equal Literal.new(3), Literal.new(3, :type => XSD.long)
+    assert_equal Literal.new('abc'), Literal.new('abc')
+    assert_not_equal Literal.new('abc'), Literal.new('abc', :language => :en)
+  end
+
 end
