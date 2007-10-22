@@ -36,10 +36,17 @@ module RDF
       data[RDF::Namespaces::RDF[:type].uri] = value
     end
 
-    def [](name)
-      #raise ArgumentError.new('wrong number of arguments') if args.empty?
+    def [](*args)
+      raise ArgumentError.new('wrong number of arguments') unless (1..2).include?(args.length)
 
-      data[@ns[name.to_s.gsub('_', '-')].uri]
+      if args.length == 1  # r[:suffix]
+        name = args.shift
+        uri = @ns[name.to_s.gsub('_', '-')].uri
+      else                 # r[:ns, :suffix]
+        ns, name = args
+        uri = Namespace[ns][name.to_s.gsub('_', '-')].uri
+      end
+      data[uri]
     end
 
     def []=(*args)
