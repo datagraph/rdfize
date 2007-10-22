@@ -79,14 +79,5 @@ module RDF
       "#<#{self.class} #{qname || uri}>"
     end
 
-    def dump(stream = $stdout)
-      data.each do |predicate, objects|
-        [objects].flatten.each do |object|
-          stream.puts "<#{uri}> <#{predicate}> #{object} ."
-          object.dump if object.respond_to?(:dump)
-        end
-      end
-    end
-
   end
 end
