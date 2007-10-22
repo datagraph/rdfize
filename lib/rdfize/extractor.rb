@@ -27,6 +27,11 @@ module RDFize
       super
     end
 
+    def self.namespace(prefix, uri)
+      RDF::Namespace.register! prefix, uri
+      RDF::Namespace[prefix]
+    end
+
     def self.content_type(type, options = {})
       @@mime_types[type] ||= []
       @@mime_types[type] << self

@@ -4,11 +4,10 @@ module RDFize::Extractors
   # Ontology defined in <http://www.w3.org/TR/vcard-rdf>
   class VCard < RDFize::Extractor
 
-    RDF::Namespace.register! :vcard, 'http://www.w3.org/2001/vcard-rdf/3.0#'
-    VCARD = RDF::Namespace[:vcard]
-
     BASICS = [:FN, :NICKNAME, :BDAY, :MAILER, :GEO, :TITLE, :ROLE, :CATEGORIES,
               :NAME, :SOURCE, :NOTE, :PRODID, :REV, :"SORT-STRING", :CLASS]
+
+    VCARD = namespace(:vcard, 'http://www.w3.org/2001/vcard-rdf/3.0#')
 
     requires_gem :vpim => true
     content_type 'text/x-vcard', :extension => :vcard
