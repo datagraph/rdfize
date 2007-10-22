@@ -1,6 +1,7 @@
 module RDFize::Extractors module PDF
   class PDFToolkit < RDFize::Extractor
 
+    INFO = ['Title', 'Author', 'Subject', 'Keywords', 'Creator', 'Producer', 'CreationDate', 'ModDate']
     PDF = namespace(:pdf, 'http://ns.adobe.com/pdf/1.3/')
 
     content_type 'application/pdf', :extension => :pdf
@@ -12,23 +13,16 @@ module RDFize::Extractors module PDF
       require 'pdf/toolkit'
     end
 
-    def extract(file, content_type)
-      pdf = ::PDF::Toolkit.open(file)
+    def extract(resource, file, content_type)
+      pdf_file = ::PDF::Toolkit.open(file)
 
-      # TODO
-      puts pdf.page_count
-      puts pdf.version.to_s
-      puts pdf.to_hash.inspect
+      resource.with_namespace(:pdf) do |pdf|
+        pdf[:PDFVersion] = pdf_file.version.to_s
 
-      info = pdf.to_hash
-      #mappings = { 'Title', 'Author', 'Subject', 'Keywords', 'Creator', 'Producer', 'CreationDate', 'ModDate' }
-      resource = RDF::Resource.new(nil, :dc) do |r|
-        r[:creator_]  = info['Producer']
-        r[:created_]  = info['CreationDate']
-        r[:modified_] = info['ModDate']
+        INFO.each do |field|
+          pdf[field] = RDF::Literal.wrap(pdf_file[field]) if pdf_file[field]
+        end
       end
-
-      self << resource
     end
 
   end

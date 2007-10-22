@@ -19,13 +19,14 @@ module RDFize::Extractors module VCard
       require 'vpim/vcard'
     end
 
-    def extract(file, content_type)
+    def extract(resource, file, content_type)
       cards = Vpim::Vcard.decode(open(file))
 
       cards.each do |card|
-        uri = nil # TODO: UID support
-        uri = "x-abuid:#{card['X-ABUID'].gsub('\\', '')}" if card['X-ABUID']
-        resource = RDF::Resource.new(uri, :vcard)
+        vcard_uri = nil # TODO: UID support
+        vcard_uri = "x-abuid:#{card['X-ABUID'].gsub('\\', '')}" if card['X-ABUID']
+        vcard = RDF::Resource.new(vcard_uri, :vcard)
+        vcard[:dc, :source] = resource
 
         ## vCard name
         # <http://www.w3.org/TR/vcard-rdf#3> (3.4 Structured Properties)
@@ -34,7 +35,7 @@ module RDFize::Extractors module VCard
         begin
           warn(card.name.inspect) if $DEBUG
 
-          resource[:N] = RDF::Resource.new(nil, :vcard) do |n|
+          vcard[:N] = RDF::Resource.new(nil, :vcard) do |n|
             [:Family, :Given, :Other, :Prefix, :Suffix].each do |prop|
               attr = prop == :Other ? :additional : prop.to_s.downcase.to_sym
               if value = card.name.send(attr)
@@ -52,7 +53,7 @@ module RDFize::Extractors module VCard
         BASICS.each do |name|
           card.values(name.to_s) do |value|
             # TODO: if it's an array, but only contains one entry, should we still create a Seq?
-            resource[name] = value.respond_to?(:each) ?
+            vcard[name] = value.respond_to?(:each) ?
               RDF::Seq.new(*value) : value.to_s
           end
         end
@@ -64,7 +65,7 @@ module RDFize::Extractors module VCard
         if orginfo = card.value('ORG')
           warn card.value('ORG').inspect if $DEBUG
 
-          resource[:ORG] = RDF::Resource.new(nil, :vcard) do |org|
+          vcard[:ORG] = RDF::Resource.new(nil, :vcard) do |org|
             orgname, *orgunits = orginfo
             org[:Orgname] = orgname
             org[:Orgunit] = RDF::Seq.new(*orgunits)
@@ -80,8 +81,8 @@ module RDFize::Extractors module VCard
         card.values('ADR') do |adr| # TODO
           warn adr.inspect if $DEBUG
 
-          resource[:ADR] ||= []
-          resource[:ADR] << RDF::Resource.new(nil, :vcard) do |node|
+          vcard[:ADR] ||= []
+          vcard[:ADR] << RDF::Resource.new(nil, :vcard) do |node|
             # TODO: adr.delivery, adr.location, adr.preferred ?
             node[:Pobox]    = adr.pobox unless adr.pobox.empty?
             node[:Extadd]   = adr.extended unless adr.extended.empty?
@@ -101,8 +102,8 @@ module RDFize::Extractors module VCard
         card.values('TEL') do |tel| # TODO
           warn tel.inspect if $DEBUG
 
-          resource[:TEL] ||= []
-          resource[:TEL] << RDF::Resource.new(nil, :rdf) do |node|
+          vcard[:TEL] ||= []
+          vcard[:TEL] << RDF::Resource.new(nil, :rdf) do |node|
             node[:type] = []
             tel.location.each { |value| node[:type] << VCARD[value] }
             tel.capability.each { |value| node[:type] << VCARD[value] }
@@ -121,8 +122,8 @@ module RDFize::Extractors module VCard
           warn email.inspect if $DEBUG
 
           # TODO: put the EMAIL element into an Alt collection per 3.2?
-          resource[:EMAIL] ||= []
-          resource[:EMAIL] << RDF::Resource.new(nil, :rdf) do |node|
+          vcard[:EMAIL] ||= []
+          vcard[:EMAIL] << RDF::Resource.new(nil, :rdf) do |node|
             node[:type] = []
             email.location.each { |value| node[:type] << VCARD[value] }
             email.format.each { |value| node[:type] << VCARD[value] }
@@ -150,8 +151,8 @@ module RDFize::Extractors module VCard
 
         # TODO: this necessitates refactoring of the decoding machinery.
         #card.groups.sort.each do |group|
-        #  resource[:GROUP] ||= []
-        #  resource[:GROUP] << RDF::Seq.new do |seq|
+        #  vcard[:GROUP] ||= []
+        #  vcard[:GROUP] << RDF::Seq.new do |seq|
         #    card.enum_by_group(group).each do |field|
         #      #puts field.inspect
         #      seq << field.value
@@ -159,7 +160,7 @@ module RDFize::Extractors module VCard
         #  end
         #end
 
-        self << resource
+        self << vcard
       end
     end
 

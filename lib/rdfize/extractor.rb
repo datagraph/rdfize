@@ -78,29 +78,37 @@ module RDFize
       # TODO
     end
 
-    def self.identify(file)
-      {'application/octet-stream' => 0.0}
-    end
+    def self.extract(file, content_type = nil)
+      uri = (file =~ /^([\w\d\.-]):\/\//) ? file :
+        "file://#{File.expand_path(file)}" # FIXME
 
-    def self.verify(file)
-      true
-    end
+      resource = RDF::Resource.new(uri, :dc)
+      resource[:format] = content_type if content_type
 
-    def self.extract(file, content_type)
       extractor = self.new
-      extractor.extract(file, content_type)
-      extractor.resources.each { |r| r.dump }
+      extractor << resource
+
+      extractor.extract(resource, file, content_type)
+      extractor.resources
     end
 
     attr_reader :resources
 
-    def extract(file, content_type)
-      []
-    end
-
     def <<(resource)
       @resources ||= []
       @resources << resource
+    end
+
+    def identify(file)
+      { 'application/octet-stream' => 0.0 }
+    end
+
+    def accept?(uri)
+      true
+    end
+
+    def extract(uri, file, content_type)
+      []
     end
 
   end

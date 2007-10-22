@@ -48,8 +48,12 @@ module RDFize module Commands
         extractor = RDFize::Extractor.for(mime_type)
         abort("#{File.basename($0)}: #{file}: No extractor for content type #{mime_type}.") unless extractor
 
-        extractor.extract(file, mime_type)
+        dump_resources extractor.extract(file, mime_type)
       end
+    end
+
+    def dump_resources(resources) # FIXME
+      resources.each { |node| node.dump }
     end
 
     def list_namespaces
