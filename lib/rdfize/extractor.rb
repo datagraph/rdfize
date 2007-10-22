@@ -5,6 +5,29 @@ module RDFize
     @@file_extensions = {}
     @@mime_types = {}
 
+    def self.extractors(only_available = false)
+      !only_available ? @@extractors :
+        @@extractors.find_all { |extractor| extractor.available? }
+    end
+
+    def self.mime_types(only_available = false)
+      unless only_available
+        @@mime_types
+      else
+        @@mime_types.reject do |type, extractors|
+          extractors.find_all { |extractor| extractor.available? }.empty?
+        end
+      end
+    end
+
+    def self.file_extensions(mime_type)
+      @@file_extensions.reject { |k, v| v != mime_type }.keys.map { |k| k.to_s }
+    end
+
+    def self.available?
+      true # TODO
+    end
+
     def self.file_extension(filename)
       filename =~ /\.([\w\d]+)$/ ? $1 : nil
     end
@@ -47,7 +70,8 @@ module RDFize
     end
 
     def self.requires_gem(args = {})
-      # TODO
+      klass = class << self; self; end
+      klass.send :define_method, :requires_gems, lambda { args }
     end
 
     def self.requires_bin(args = {})

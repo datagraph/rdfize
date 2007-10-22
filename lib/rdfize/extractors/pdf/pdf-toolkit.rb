@@ -1,6 +1,8 @@
 module RDFize::Extractors module PDF
   class PDFToolkit < RDFize::Extractor
 
+    PDF = namespace(:pdf, 'http://ns.adobe.com/pdf/1.3/')
+
     content_type 'application/pdf', :extension => :pdf
 
     # Requires <http://rubyforge.org/projects/pdf-toolkit/>
@@ -19,7 +21,7 @@ module RDFize::Extractors module PDF
       puts pdf.to_hash.inspect
 
       info = pdf.to_hash
-      #mappings = { 'Producer', 'Creator', 'Author', 'CreationDate', 'ModDate', 'Title', 'Keywords' }
+      #mappings = { 'Title', 'Author', 'Subject', 'Keywords', 'Creator', 'Producer', 'CreationDate', 'ModDate' }
       resource = RDF::Resource.new(nil, :dc) do |r|
         r[:creator_]  = info['Producer']
         r[:created_]  = info['CreationDate']

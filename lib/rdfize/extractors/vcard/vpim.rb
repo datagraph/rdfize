@@ -1,8 +1,8 @@
-module RDFize::Extractors
+module RDFize::Extractors module VCard
   ##
   # Requires <http://rubyforge.org/projects/vpim/>
   # Ontology defined in <http://www.w3.org/TR/vcard-rdf>
-  class VCard < RDFize::Extractor
+  class VPIM < RDFize::Extractor
 
     BASICS = [:FN, :NICKNAME, :BDAY, :MAILER, :GEO, :TITLE, :ROLE, :CATEGORIES,
               :NAME, :SOURCE, :NOTE, :PRODID, :REV, :"SORT-STRING", :CLASS]
@@ -164,4 +164,4 @@ module RDFize::Extractors
     end
 
   end
-end
+end end
