@@ -48,7 +48,11 @@ module RDFize module Commands
         extractor = RDFize::Extractor.for(mime_type)
         abort("#{File.basename($0)}: #{file}: No extractor for content type #{mime_type}.") unless extractor
 
-        dump_resources extractor.extract(file, mime_type)
+        begin
+          dump_resources extractor.extract(file, mime_type)
+        rescue RDFize::Extractor::GemMissingError => e
+          warn "#{File.basename($0)}: #{file}: The #{mime_type} extractor requires the following RubyGems: #{e.message.join(', ')}."
+        end
       end
     end
 

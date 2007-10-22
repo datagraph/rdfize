@@ -1,5 +1,7 @@
 module RDFize
   class Extractor
+    class GemMissingError < LoadError; end
+    class BinMissingError < LoadError; end
 
     @@extractors = []
     @@file_extensions = {}
@@ -85,7 +87,12 @@ module RDFize
       resource = RDF::Resource.new(uri, :dc)
       resource[:format] = content_type if content_type
 
-      extractor = self.new
+      begin
+        extractor = self.new
+      rescue LoadError => e
+        raise GemMissingError.new(self.requires_gems.keys)
+      end
+
       extractor << resource
 
       extractor.extract(resource, file, content_type)
