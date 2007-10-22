@@ -1,8 +1,8 @@
 module RDF
   module Collections
-    BAG = Namespaces::RDF.bag
-    SEQ = Namespaces::RDF.seq
-    ALT = Namespaces::RDF.alt
+    BAG = Namespaces::RDF.Bag
+    SEQ = Namespaces::RDF.Seq
+    ALT = Namespaces::RDF.Alt
   end
 
   class Collection < Resource
