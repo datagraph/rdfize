@@ -1,11 +1,16 @@
-module RDFize::Extractors
-  class PDF < RDFize::Extractor
+module RDFize::Extractors module PDF
+  class PDFToolkit < RDFize::Extractor
 
-    requires_gem :pdf_toolkit => true
     content_type 'application/pdf', :extension => :pdf
 
-    def self.extract(file, content_type)
+    # Requires <http://rubyforge.org/projects/pdf-toolkit/>
+    requires_gem :pdf_toolkit => true
+
+    def initialize
       require 'pdf/toolkit'
+    end
+
+    def extract(file, content_type)
       pdf = ::PDF::Toolkit.open(file)
 
       # TODO
@@ -21,8 +26,8 @@ module RDFize::Extractors
         r[:modified_] = info['ModDate']
       end
 
-      resource.dump
+      self << resource
     end
 
   end
-end
+end end

@@ -9,14 +9,17 @@ module RDFize::Extractors
 
     VCARD = namespace(:vcard, 'http://www.w3.org/2001/vcard-rdf/3.0#')
 
-    requires_gem :vpim => true
     content_type 'text/x-vcard', :extension => :vcard
     content_type 'text/directory', :extension => :vcf
 
-    def self.extract(file)
-      require 'vpim/vcard'
+    # Requires <http://rubyforge.org/projects/vpim/>
+    requires_gem :vpim => true
 
-      resources = []
+    def initialize
+      require 'vpim/vcard'
+    end
+
+    def extract(file, content_type)
       cards = Vpim::Vcard.decode(open(file))
 
       cards.each do |card|
@@ -156,10 +159,8 @@ module RDFize::Extractors
         #  end
         #end
 
-        resources << resource
+        self << resource
       end
-
-      resources
     end
 
   end

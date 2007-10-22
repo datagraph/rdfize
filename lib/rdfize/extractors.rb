@@ -1,2 +1,2 @@
-require 'rdfize/extractors/pdf/pdf-toolkit.rb'
-require 'rdfize/extractors/vcard/vpim.rb'
+require 'rdfize/extractors/pdf/pdf-toolkit'
+require 'rdfize/extractors/vcard/vpim'

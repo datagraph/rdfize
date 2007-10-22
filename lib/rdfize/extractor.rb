@@ -63,7 +63,20 @@ module RDFize
     end
 
     def self.extract(file, content_type)
+      extractor = self.new
+      extractor.extract(file, content_type)
+      extractor.resources.each { |r| r.dump }
+    end
+
+    attr_reader :resources
+
+    def extract(file, content_type)
       []
+    end
+
+    def <<(resource)
+      @resources ||= []
+      @resources << resource
     end
 
   end
