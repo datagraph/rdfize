@@ -11,10 +11,11 @@ module RDF
       end
     end
 
-    def initialize(stream = $stdout)
+    def initialize(stream = $stdout, &block)
       @stream = stream
       @nodes = {}
       @node_id = 0
+      block.call(self) if block_given?
     end
 
     def node_id
