@@ -8,7 +8,7 @@ module RDF
   class Collection < Resource
     def initialize(*values, &block)
       super uri, :rdf, :type => RDF::Collections::SEQ
-      values.each { |value| self << value }
+      values.each { |value| self << RDF::Literal.wrap(value) }
     end
 
     def <<(value)
