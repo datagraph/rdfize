@@ -13,6 +13,13 @@ module RDF
       block.call(self) if block_given?
     end
 
+    def with_namespace(ns, &block)
+      prev_ns = @ns
+      @ns = Namespace[ns.to_sym] rescue Namespace.new(ns.to_s)
+      block.call(self)
+      @ns = prev_ns
+    end
+
     def anonymous?
       @uri.nil?
     end
