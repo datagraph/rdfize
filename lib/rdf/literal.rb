@@ -6,8 +6,9 @@ module RDF
     attr_reader :language
     attr_reader :type
 
-    def self.parse(value, type)
-      self.new(value, :type => type) # FIXME
+    def self.wrap(value) # FIXME
+      literal = self.new(value)
+      literal.type.nil? ? value : literal
     end
 
     def initialize(value, options = {})
