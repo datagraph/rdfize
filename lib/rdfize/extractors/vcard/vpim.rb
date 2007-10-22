@@ -22,11 +22,15 @@ module RDFize::Extractors module VCard
     def extract(resource, file, content_type)
       cards = Vpim::Vcard.decode(open(file))
 
+      resource[:type] = RDF::Resource.new('http://purl.org/dc/dcmitype/Dataset')
+      resource[:dcterms, :tableOfContents] = RDF::Seq.new
+
       cards.each do |card|
         vcard_uri = nil # TODO: UID support
         vcard_uri = "x-abuid:#{card['X-ABUID'].gsub('\\', '')}" if card['X-ABUID']
         vcard = RDF::Resource.new(vcard_uri, :vcard)
         vcard[:dc, :source] = resource
+        resource[:dcterms, :tableOfContents] << vcard
 
         ## vCard name
         # <http://www.w3.org/TR/vcard-rdf#3> (3.4 Structured Properties)
@@ -54,7 +58,7 @@ module RDFize::Extractors module VCard
           card.values(name.to_s) do |value|
             # TODO: if it's an array, but only contains one entry, should we still create a Seq?
             vcard[name] = value.respond_to?(:each) ?
-              RDF::Seq.new(*value) : value.to_s
+              RDF::Seq.new(*value) : RDF::Literal.wrap(value)
           end
         end
 

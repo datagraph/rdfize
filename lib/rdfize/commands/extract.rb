@@ -53,7 +53,8 @@ module RDFize module Commands
     end
 
     def dump_resources(resources) # FIXME
-      resources.each { |node| node.dump }
+      writer = RDF::Writer.new
+      resources.each { |node| writer << node }
     end
 
     def list_namespaces
