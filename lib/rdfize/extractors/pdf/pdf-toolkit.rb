@@ -7,7 +7,7 @@ module RDFize::Extractors module PDF
     content_type 'application/pdf', :extension => :pdf
 
     # Requires <http://rubyforge.org/projects/pdf-toolkit/>
-    requires_gem :pdf_toolkit => true
+    requires_gem :"pdf-toolkit" => '0.49'
 
     def initialize
       require 'pdf/toolkit'
