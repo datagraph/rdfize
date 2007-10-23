@@ -1,7 +1,38 @@
 module RDF
-  class Resource
-
+  class URIRef < Node
     attr_reader :uri
+
+    def initialize(uri)
+      @uri = uri
+    end
+
+    def ==(other)
+      uri == other.uri
+    end
+
+    def qname
+      if uri =~ /([\w\d\-_]+)$/
+        suffix = $1
+        if prefix = Namespace.prefix_for(uri[0...-suffix.length])
+          "#{prefix}:#{suffix}"
+        else
+          nil
+        end
+      end
+    end
+
+    def to_s
+      "<#{qname || uri}>"
+    end
+
+    def inspect
+      "#<#{self.class} #{qname || uri}>"
+    end
+  end
+
+  class Resource < URIRef
+    include Enumerable
+
     attr_reader :data
     attr_writer :ns
 
@@ -13,19 +44,23 @@ module RDF
       block.call(self) if block_given?
     end
 
-    def with_namespace(ns, &block)
-      prev_ns = @ns
-      @ns = Namespace[ns.to_sym] rescue Namespace.new(ns.to_s)
-      block.call(self)
-      @ns = prev_ns
+    def ==(other)
+      anonymous? ? self.equal?(other) : uri == other.uri
+    end
+
+    def each
+      data.each { |k, v| yield [k, v] }
     end
 
     def anonymous?
       @uri.nil?
     end
 
-    def ==(other)
-      anonymous? ? self.equal?(other) : uri == other.uri
+    def with_namespace(ns, &block)
+      prev_ns = @ns
+      @ns = Namespace[ns.to_sym] rescue Namespace.new(ns.to_s)
+      block.call(self)
+      @ns = prev_ns
     end
 
     def namespaces
@@ -66,25 +101,6 @@ module RDF
     #  #suffix = method.to_s.gsub(/[=\?]+$/, '').gsub('_', '-').to_sym
     #  self[method.to_s.gsub('_', '-')]
     #end
-
-    def qname
-      if uri =~ /([\w\d\-_]+)$/
-        suffix = $1
-        if prefix = Namespace.prefix_for(uri[0...-suffix.length])
-          "#{prefix}:#{suffix}"
-        else
-          nil
-        end
-      end
-    end
-
-    def to_s
-      "<#{qname || uri}>"
-    end
-
-    def inspect
-      "#<#{self.class} #{qname || uri}>"
-    end
 
   end
 end

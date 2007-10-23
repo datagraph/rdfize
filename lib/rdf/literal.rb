@@ -1,5 +1,5 @@
 module RDF
-  class Literal
+  class Literal < Node
     XSD = RDF::Namespaces::XSD
 
     attr_reader :value
