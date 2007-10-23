@@ -1,7 +1,0 @@
-require 'rdf/namespace'
-require 'rdf/namespaces'
-require 'rdf/repository'
-require 'rdf/node'
-require 'rdf/literal'
-require 'rdf/resource'
-require 'rdf/collections'

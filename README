@@ -3,6 +3,7 @@
 == Dependencies
 
 * Ruby 1.8+
+* RDF.rb
 
 
 == Download
@@ -11,7 +12,7 @@ The latest version of RDFize can be found at:
 
 * http://rubyforge.org/frs/?group_id=4677
 
-Documentation can be found at:
+API documentation can be found at:
 
 * http://rdfize.rubyforge.org/
 
