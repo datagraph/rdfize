@@ -1,0 +1,8 @@
+--title "RDFize"
+--output-dir doc/yard
+--markup markdown
+--readme README.md
+-
+AUTHORS
+UNLICENSE
+VERSION
