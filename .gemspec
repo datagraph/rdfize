@@ -8,8 +8,8 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.name               = 'rdfize'
   gem.homepage           = 'http://github.com/bendiken/rdfize' # FIXME
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
-  gem.summary            = '...' # TODO
-  gem.description        = '...' # TODO
+  gem.summary            = 'A command-line tool for converting various data formats/sources into RDF.'
+  gem.description        = 'RDFize is a command-line tool for converting various data formats and data sources into RDF.'
   gem.rubyforge_project  = 'rdfize'
 
   gem.authors            = ['Arto Bendiken']
