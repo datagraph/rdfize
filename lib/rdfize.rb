@@ -1,5 +1,2 @@
 require 'rdf'
-require 'rdf/writer'
 require 'rdfize/version'
-require 'rdfize/extractor'
-require 'rdfize/extractors'
