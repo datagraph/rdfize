@@ -1,15 +1,8 @@
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rake/gempackagetask'
-require 'rake/contrib/rubyforgepublisher'
-require 'rake/clean'
-
+#!/usr/bin/env ruby
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
-require 'rdfize/version'
-
-Rake::TestTask.new do |t|
-  t.test_files = FileList['test/test*.rb']
-  t.warning = true
-  t.ruby_opts = %w(-rtest/unit)
+require 'rubygems'
+begin
+  require 'rakefile' # http://github.com/bendiken/rakefile
+rescue LoadError => e
 end
+require 'rdfize'
