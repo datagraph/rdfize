@@ -29,7 +29,7 @@ as follows:
 Dependencies
 ------------
 
-* [RDF.rb](http://rdf.rubyforge.org/) (>= 0.0.4)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.1.0)
 
 Installation
 ------------
