@@ -66,7 +66,7 @@ module RDFize
     # @return [Integer]
     def on_header(data)
       # TODO
-      data.bytesize
+      return data.bytesize
     end
 
     ##
@@ -74,15 +74,16 @@ module RDFize
     # @return [Integer]
     def on_body(data)
       # TODO
-      data.bytesize
+      return data.bytesize
     end
 
     ##
     # @param  [Float] dl_total
     # @param  [Float] dl_now
-    # @return [void]
+    # @return [Boolean] `true` or `false`
     def on_progress(dl_total, dl_now, ul_total, ul_now)
       # TODO
+      return true
     end
 
     ##
