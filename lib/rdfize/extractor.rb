@@ -16,6 +16,20 @@ module RDFize
     end
 
     ##
+    # @yield  [type]
+    # @yieldparam   [String] type
+    # @yieldereturn [void] ignored
+    # @return [Enumerator]
+    def self.content_types(&block)
+      if block_given?
+        @@classes ||= {}
+        @@weights ||= {}
+        @@classes.keys.sort { |a, b| @@weights[b] <=> @@weights[a] }.each(&block)
+      end
+      enum_for(:content_types)
+    end
+
+    ##
     # @param  [Hash{Symbol => Object}] options
     def initialize(options = {})
       @options = options.dup
