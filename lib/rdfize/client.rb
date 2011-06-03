@@ -3,6 +3,21 @@ require 'curb' # @see http://rubygems.org/gems/curb
 module RDFize
   class Client
     ##
+    # @return [String]
+    def self.user_agent
+      "RDFize/#{VERSION}"
+    end
+
+    ##
+    # @return [String]
+    def self.accept_string
+      types = Extractor.content_types.map do |content_type|
+        content_type + (';q=%.1f' % Extractor.weight_for(content_type))
+      end
+      types.join(', ')
+    end
+
+    ##
     # @param  [Hash{Symbol => Object}] options
     # @option options [String]  :user_agent ("RDFize/x.y.z")
     # @option options [Integer] :timeout    (30)
@@ -25,8 +40,8 @@ module RDFize
         c.enable_cookies  = true
         c.verbose         = true if options[:debug]
 
-        c.useragent       = (options[:user_agent] || "RDFize/#{VERSION}").to_s
-        c.headers['Accept'] = '*/*' # FIXME
+        c.useragent       = (options[:user_agent] || self.class.user_agent).to_s
+        c.headers['Accept'] = self.class.accept_string
       end
     end
 
