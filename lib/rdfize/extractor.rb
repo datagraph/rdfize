@@ -9,10 +9,8 @@ module RDFize
     # @return [Enumerator]
     def self.each(&block)
       if block_given?
-        @extractors ||= {}
-        @extractors.each_value do |values|
-          values.each(&block)
-        end
+        @@classes ||= {}
+        @@classes.values.uniq.each(&block)
       end
       enum_for(:each)
     end
@@ -21,6 +19,21 @@ module RDFize
     # @param  [Hash{Symbol => Object}] options
     def initialize(options = {})
       @options = options.dup
+    end
+
+  protected
+
+    ##
+    # @param  [String] type
+    # @param  [Hash{Symbol => Object}] options
+    # @option options [Float] :weight (0.1)
+    # @return [void]
+    def self.content_type(type, options = {})
+      type = type.to_s
+      @@classes ||= {}
+      @@classes[type] = self
+      @@weights ||= {}
+      @@weights[type] = Float(options[:weight] || 0.1)
     end
   end # Extractor
 end # RDFize
