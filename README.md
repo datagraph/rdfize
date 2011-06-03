@@ -19,7 +19,10 @@ Dependencies
 
 * [Ruby](http://ruby-lang.org/) (>= 1.9.2)
 * [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.3.0)
-* [RDF::Raptor](http://rubygems.org/gems/rdf-raptor) (>= 0.3.0)
+* [RDF::Raptor](http://rubygems.org/gems/rdf-raptor) (>= 0.3.0) and
+  [libraptor](http://librdf.org/raptor/) (>= 2.0)
+* [Curb](http://rubygems.org/gems/curb) (>= 0.7.15) and
+  [libcurl](http://curl.haxx.se/libcurl/) (>= 7.21)
 
 Installation
 ------------

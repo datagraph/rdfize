@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rdf',        '>= 0.3.0'
 gem 'rdf-raptor', '>= 0.3.0'
+gem 'curb',       '>= 0.7.15'
 
 group :development, :test do
   gem 'rdf-spec', '>= 0.3.0'

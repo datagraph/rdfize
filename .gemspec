@@ -27,6 +27,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.9.2'
   gem.requirements               = []
+  gem.add_runtime_dependency     'curb',           '>= 0.7.15'
   gem.add_runtime_dependency     'rdf-raptor',     '>= 0.3.0'
   gem.add_runtime_dependency     'rdf',            '>= 0.3.0'
   gem.add_development_dependency 'yard' ,          '>= 0.7.0'
