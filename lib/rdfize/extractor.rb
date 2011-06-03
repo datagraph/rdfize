@@ -30,6 +30,14 @@ module RDFize
     end
 
     ##
+    # @param  [String] type
+    # @return [Float] `(0.0..1.0)`
+    def self.weight_for(type)
+      @@weights ||= {}
+      @@weights[type.to_s] || 0.1
+    end
+
+    ##
     # @param  [Hash{Symbol => Object}] options
     def initialize(options = {})
       @options = options.dup
